@@ -82,6 +82,10 @@ footer a {
   text-decoration: underline;
 }
 
+li {
+    float: left;
+}
+
 em {
   font-style: italic;
 }
@@ -155,6 +159,16 @@ blockquote {
 ul, ol, dl {
   margin: 0 0 15px 0;
   padding-left: 20px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+} 
+
+li {
+    float: left;
 }
 
 dl dt {
@@ -293,6 +307,11 @@ Full-Width Styles
 
 .tar_download_link:hover {
   background: url(../images/sprite_download.png) no-repeat top right;
+}
+
+.nav_bar {
+	display: block;
+    width: 80px;
 }
 
 #main_content_wrap {
