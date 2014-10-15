@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: Pergola
 home: true
 weight: 1
 ---

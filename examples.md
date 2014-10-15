@@ -1,10 +1,10 @@
 ---
 layout: default
-title: pergola
+title: Examples
 weight: 1
 ---
 
-## Pergola examples
+## Examples
 
 {% highlight python linenos %}
 

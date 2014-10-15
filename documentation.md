@@ -4,6 +4,6 @@ title: Documentation
 weight: 2
 ---
 
-## Pergola
+## Documentation
 
 Pergola documentation
