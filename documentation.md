@@ -16,7 +16,8 @@ automatically transform into intervals
 
 {% highlight python linenos %}
 
-# intervals=False otherwise you need in your data two colums one with the start and a second with the end of each interval
+# intervals=False 
+# otherwise you need in your data 2 colums one with the start and a second with the end of each interval
 intData = int2browser.intData(path, ontology_dict=configFileDict.correspondence, intervals=False)
 
 {% endhighlight %}
