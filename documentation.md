@@ -21,3 +21,14 @@ automatically transform into intervals
 intData = int2browser.intData(path, ontology_dict=configFileDict.correspondence, intervals=False)
 
 {% endhighlight %}
+
+
+#### Fields option
+
+This option is used to set the fields to be read from your file
+If your header has header  
+
+{% highlight python linenos %}
+# fields=['list', 'of', 'fields']
+
+{% endhighlight %}
