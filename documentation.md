@@ -25,10 +25,11 @@ intData = int2browser.intData(path, ontology_dict=configFileDict.correspondence,
 
 #### Fields option
 
-This option is used to set the fields to be read from your file
-If your header has header  
+This option is used to set the fields to be read from your file  
 
 {% highlight python linenos %}
 # fields=['list', 'of', 'fields']
 
 {% endhighlight %}
+
+Tip: if your file does not have header 
