@@ -77,14 +77,12 @@
 <span class="sd">    Ontology can be read both from a tabulated file or a ontology format file </span>
 <span class="sd">    </span>
 <span class="sd">    .. attribute:: path</span>
-<span class="sd">    </span>
 <span class="sd">       Name of/path to a configuration file</span>
 <span class="sd">    </span>
-<span class="sd">    .. attribute::  correspondence</span>
-<span class="sd">    </span>
+<span class="sd">    .. attribute::  correspondence </span>
 <span class="sd">       Dictionary with keys fields in behavioral file and values correspondence in genomic grammar</span>
 <span class="sd">    </span>
-<span class="sd">    :returns: ConfigInfo object</span>
+<span class="sd">    :return: ConfigInfo object</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -173,6 +171,7 @@
 
     <span class="n">genomeFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">pwd</span><span class="p">,</span> <span class="n">chrom</span> <span class="o">+</span> <span class="n">_genome_file_ext</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>        
     <span class="n">genomeFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;&gt;&quot;</span> <span class="o">+</span> <span class="n">chrom</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;-----------min max&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="c">#del</span>
     <span class="n">genomeFile</span><span class="o">.</span><span class="n">write</span> <span class="p">(</span><span class="n">_generic_nt</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">))</span>
     <span class="n">genomeFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#39;Genome fasta file created: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pwd</span> <span class="o">+</span> <span class="n">chrom</span> <span class="o">+</span> <span class="n">_genome_file_ext</span><span class="p">)</span>

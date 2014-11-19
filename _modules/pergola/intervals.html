@@ -72,6 +72,7 @@
 <span class="c"># from operator import itemgetter</span>
 <span class="c"># from itertools import groupby </span>
 <span class="kn">from</span> <span class="nn">tracks</span> <span class="kn">import</span> <span class="n">Track</span> 
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
 
 <div class="viewcode-block" id="IntData"><a class="viewcode-back" href="../../code.html#pergola.intervals.IntData">[docs]</a><span class="k">class</span> <span class="nc">IntData</span><span class="p">:</span> 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -133,8 +134,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">check_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_delimiter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;delimiter&#39;</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;header&#39;</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fieldsB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_fields_b</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;fields_names&#39;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_fields_g</span><span class="p">(</span><span class="n">ontology_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldsB</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_fields_b</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;fields_names&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_fields_g</span><span class="p">(</span><span class="n">ontology_dict</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">range_values</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">multiply_t</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;multiply_t&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">intervals</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;intervals&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
@@ -187,6 +189,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">inFile</span>  <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span>  <span class="n">reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inFile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delimiter</span><span class="p">)</span>       
         
+        <span class="n">fieldsB</span> <span class="o">=</span> <span class="p">[]</span>
+        
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">:</span>            
             <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
             <span class="n">first_r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
@@ -206,6 +210,12 @@
                                      <span class="s">&quot;Also make sure you don&#39;t need to set header=False&quot;</span>
                                      <span class="o">%</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fields</span><span class="p">),</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">header</span><span class="p">)))</span>
                 
+                <span class="n">ori_fieldsB</span> <span class="o">=</span> <span class="p">[</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&#39;# &#39;</span><span class="p">)]</span><span class="o">+</span><span class="n">header</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>  <span class="c">#del</span>
+                                
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ori_fieldsB</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span> <span class="n">fieldsB</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span> <span class="n">fieldsB</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>      
+                <span class="k">print</span> <span class="s">&quot;fields B all fields of header&quot;</span><span class="p">,</span> <span class="n">fieldsB</span><span class="c">#del</span>
                 <span class="n">fieldsB</span> <span class="o">=</span> <span class="n">fields</span>
                      
             <span class="k">else</span><span class="p">:</span>       
@@ -227,7 +237,7 @@
                                   <span class="s">&#39;an ordered list of columns names using fields&#39;</span><span class="p">)</span>     
                 
         <span class="bp">self</span><span class="o">.</span><span class="n">inFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        
+        <span class="k">print</span> <span class="s">&quot;..............fieldsB&quot;</span><span class="p">,</span><span class="n">fieldsB</span>
         <span class="k">return</span> <span class="n">fieldsB</span>
     
     <span class="k">def</span> <span class="nf">_set_fields_g</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ontology_dict</span><span class="p">):</span>
@@ -239,23 +249,32 @@
 <span class="sd">        :return: list with the corresponding genomics names of the fields inside behavioral (input) data</span>
 <span class="sd">         </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-            
-        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">field_b</span> <span class="ow">in</span> <span class="n">ontology_dict</span> <span class="k">for</span> <span class="n">field_b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldsB</span><span class="p">):</span>
-            <span class="n">name_fields_g</span> <span class="o">=</span> <span class="p">[</span><span class="n">ontology_dict</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldsB</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>    
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Fields param </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s"> contains a field not present in config_file </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s">&quot;</span> 
-                             <span class="o">%</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsB</span><span class="p">),</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ontology_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+        <span class="n">dict_fields_g</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">i_field_b</span><span class="o">=</span><span class="mi">0</span>
+        
+        <span class="k">for</span> <span class="n">field_B</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldsB</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field_B</span><span class="p">:</span>
+                <span class="n">dict_fields_g</span><span class="p">[</span><span class="n">ontology_dict</span> <span class="p">[</span><span class="n">field_B</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i_field_b</span>
+            <span class="n">i_field_b</span> <span class="o">=</span> <span class="n">i_field_b</span> <span class="o">+</span> <span class="mi">1</span>                    
+        
+        <span class="n">name_fields_g</span> <span class="o">=</span> <span class="p">[</span><span class="n">ontology_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldsB</span> <span class="k">if</span> <span class="n">k</span><span class="p">]</span>   
+<span class="c">#         if all(field_b in ontology_dict for field_b in self.fieldsB):</span>
+<span class="c">#             name_fields_g = [ontology_dict [k] for k in self.fieldsB]</span>
+<span class="c">#         else:    </span>
+<span class="c">#             raise ValueError(&quot;Fields param \&quot;%s\&quot; contains a field not present in config_file \&quot;%s\&quot;&quot; </span>
+<span class="c">#                              % (&quot;\&quot;,\&quot;&quot;.join(self.fieldsB), &quot;\&quot;,\&quot;&quot;.join(ontology_dict.keys()))) #del </span>
+<span class="c">#          YA ESTA HECVHO ARRIBA</span>
         
         <span class="c">#Input file at least should have two fields that correspond to:</span>
         <span class="n">mandatory_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;chromStart&quot;</span><span class="p">,</span> <span class="s">&quot;dataValue&quot;</span><span class="p">]</span>
         
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">f</span> <span class="ow">in</span> <span class="n">name_fields_g</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">mandatory_fields</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Input file mandatory fields  are </span><span class="se">\&quot;</span><span class="s">chromStart</span><span class="se">\&quot;</span><span class="s"> and </span><span class="se">\&quot;</span><span class="s">chromEnd</span><span class="se">\&quot;</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span> \
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">f</span> <span class="ow">in</span> <span class="n">dict_fields_g</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">mandatory_fields</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Input file mandatory fields  are </span><span class="se">\&quot;</span><span class="s">chromStart</span><span class="se">\&quot;</span><span class="s"> and </span><span class="se">\&quot;</span><span class="s">dataValue</span><span class="se">\&quot;</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span> \
                              <span class="s">&quot;Your current assigned fields are </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;\n</span><span class="s">&quot;</span> \
                              <span class="s">&quot;TIP: Check your ontology_file&quot;</span>                               
-                             <span class="o">%</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_fields_g</span><span class="p">)))</span>
+                             <span class="o">%</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">,</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_fields_g</span><span class="p">)))</span>            
         
-        <span class="k">return</span> <span class="n">name_fields_g</span>
+        <span class="k">return</span> <span class="n">dict_fields_g</span>
     
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multiply_t</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">intervals</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -275,11 +294,12 @@
         <span class="n">list_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inFile</span>  <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inFile</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
         
         <span class="c"># Field assign to data value should be an integer or float</span>
-        <span class="n">idx_dataValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;dataValue&quot;</span><span class="p">)]</span>
-         
+        <span class="n">idx_dataValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">[</span><span class="s">&quot;dataValue&quot;</span><span class="p">]]</span>
+        
         <span class="n">_int_points</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;chromStart&quot;</span><span class="p">,</span> <span class="s">&quot;chromEnd&quot;</span><span class="p">]</span>
         <span class="n">idx_fields2int</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000000000000</span><span class="p">]</span>
         <span class="n">i_new_field</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000000000000</span><span class="p">]</span>                                    
@@ -289,23 +309,26 @@
             <span class="n">_time_points</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;chromStart&quot;</span><span class="p">]</span>
             <span class="n">f_int_end</span> <span class="o">=</span> <span class="s">&quot;chromEnd&quot;</span>
         
-            <span class="k">if</span> <span class="n">f_int_end</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">f_int_end</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Intervals can not be generated as &#39;</span><span class="si">%s</span><span class="s">&#39; already exists in file </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f_int_end</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
                 
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">idx_fields2int</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_time_points</span><span class="p">]</span>              
+                <span class="n">idx_fields2int</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_time_points</span><span class="p">]</span>     
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Parameter intervals=True needs that field &#39;</span><span class="si">%s</span><span class="s">&#39; is in file is not missing </span><span class="si">%s</span><span class="s">.&quot;</span> 
                                  <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
             
-            <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_int_end</span><span class="p">)</span>   
-            <span class="n">i_new_field</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">i_new_field</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsB</span><span class="p">)</span>
+            
+            <span class="k">print</span> <span class="s">&quot;new field index is:&quot;</span><span class="p">,</span> <span class="n">i_new_field</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">[</span><span class="n">f_int_end</span><span class="p">]</span> <span class="o">=</span> <span class="n">i_new_field</span>
+            
+            <span class="n">i_new_field</span> <span class="o">=</span> <span class="p">[</span><span class="n">i_new_field</span><span class="p">]</span><span class="c">#del</span>
         
         <span class="k">try</span><span class="p">:</span>            
             <span class="n">f</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-            <span class="n">name_fields2mult</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_int_points</span> <span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="p">]</span> 
-            <span class="n">idx_fields2mult</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">name_fields2mult</span><span class="p">]</span>
-                 
+            <span class="n">name_fields2mult</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_int_points</span> <span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">]</span> 
+            <span class="n">idx_fields2mult</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">name_fields2mult</span><span class="p">]</span>                
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Field &#39;</span><span class="si">%s</span><span class="s">&#39; not in file </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
         
@@ -315,13 +338,14 @@
         <span class="n">_start_f</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;chromStart&quot;</span><span class="p">]</span>
         
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">i_min</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_start_f</span><span class="p">]</span>              
+<span class="c">#             i_min = [self.fieldsG_dict.index(f) for f in _start_f]</span>
+            <span class="n">i_min</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_start_f</span><span class="p">]</span>              
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Field &#39;</span><span class="si">%s</span><span class="s">&#39; for min interval calculation time not in file </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
             
         <span class="n">_end_f</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;chromEnd&quot;</span><span class="p">]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">i_max</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_end_f</span><span class="p">]</span>              
+            <span class="n">i_max</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_end_f</span><span class="p">]</span>              
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Field &#39;</span><span class="si">%s</span><span class="s">&#39; for max interval calculation time not in file </span><span class="si">%s</span><span class="s"> </span><span class="se">\n</span><span class="s">&quot;</span> \
                              <span class="s">&quot;TIP: If your file contains timepoints you can transform them to intervals&quot;</span> \
@@ -335,7 +359,7 @@
         <span class="n">_start_f</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;dataValue&quot;</span><span class="p">]</span>
         
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">i_data_value</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_start_f</span><span class="p">]</span>              
+            <span class="n">i_data_value</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">_start_f</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Field &#39;</span><span class="si">%s</span><span class="s">&#39; for dataValue range calculation time not in file </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
         
@@ -344,48 +368,68 @@
         <span class="n">first</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">p_temp</span> <span class="o">=</span> <span class="p">[]</span>
         
+        <span class="k">print</span> <span class="s">&quot;range in dicitioanry is&quot;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="p">))</span>
+                            
         <span class="k">for</span> <span class="n">interv</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>            
             <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>            
-                                    
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span><span class="p">)):</span> 
-                               
+            
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+<span class="c">#                 print &quot;index are:&quot;, i#del</span>
+<span class="c">#             for i in range(len(self.fieldsG_dict)):#del </span>
+            <span class="c">#TODO                                   </span>
                 <span class="c"># Values in idx_fields2int have to be integers</span>
-                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_fields2int</span><span class="p">:</span>
-                    <span class="n">a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">interv</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">multiply_t</span><span class="p">)</span>
-                    <span class="n">b</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">interv</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">multiply_t</span>
-                    <span class="k">if</span> <span class="n">a</span><span class="o">-</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span> <span class="p">(</span><span class="s">&quot;Values in chromStart and chromEnd should be integers.</span><span class="se">\n</span><span class="s">&quot;</span> \
-                                        <span class="s">&quot;TIP: If you have to transform value from lets say &quot;</span> \
-                                        <span class="s">&quot;seconds to miliseconds try using multiply_t.&quot;</span><span class="p">)</span>
+<span class="c">#                 if i in idx_fields2int:</span>
+<span class="c">#                     print interv[i]</span>
+<span class="c">#                 </span>
+<span class="c">#                     a = float(interv[i]) * multiply_t</span>
+<span class="c">#                     print &quot;---------&quot;, a</span>
+<span class="c">#                     if a.is_integer():</span>
+<span class="c">#                         pass</span>
+<span class="c">#                     else:</span>
+<span class="c">#                         raise ValueError (&quot;Values in chromStart and chromEnd should be integers.\n&quot; \</span>
+<span class="c">#                                           &quot;TIP: If you have to transform value from lets say &quot; \</span>
+<span class="c">#                                           &quot;seconds to miliseconds try using multiply_t.&quot;)</span>
+<span class="c"># #                     a = int(float(interv[i]) * multiply_t)</span>
+<span class="c">#                     b = float(interv[i]) * multiply_t</span>
+<span class="c">#                     print &quot;-----&quot;, interv[i], a,b, int(float(interv[i]) * multiply_t), float(interv[i]) * multiply_t</span>
+<span class="c">#                     if a-b != 0:</span>
+<span class="c">#                         raise ValueError (&quot;Values in chromStart and chromEnd should be integers.\n&quot; \</span>
+<span class="c">#                                         &quot;TIP: If you have to transform value from lets say &quot; \</span>
+<span class="c">#                                         &quot;seconds to miliseconds try using multiply_t.&quot;)</span>
 
                 <span class="c"># Field assign to data value should be an integer or float        </span>
+<span class="c">#                 print &quot;.........&quot;,idx_dataValue</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_dataValue</span><span class="p">:</span>                    
                     <span class="k">try</span><span class="p">:</span>
                         <span class="nb">float</span><span class="p">(</span><span class="n">interv</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Values in dataValue should be numerical not others: </span><span class="si">%s</span><span class="s">.</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Values in dataValue should be numerical not others: </span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s">.</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span>
                                           <span class="n">interv</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> 
                 
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_fields2mult</span> <span class="ow">and</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_fields2int</span><span class="p">:</span>                                                             
                     <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">interv</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">multiply_t</span><span class="p">)</span>
                     <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                     <span class="n">p_v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="mi">1</span>
+                    
                     <span class="k">if</span> <span class="n">intervals</span><span class="p">:</span> <span class="n">last_start</span> <span class="o">=</span> <span class="n">v</span>
+                    
                 <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">i_new_field</span> <span class="ow">and</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_fields2mult</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">first</span><span class="p">:</span>                                                
                         <span class="k">pass</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">p_temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_v</span><span class="p">)</span>                        
+                        <span class="n">p_temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_v</span><span class="p">)</span>  
+                                              
                 <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx_fields2mult</span> <span class="ow">and</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">idx_fields2int</span><span class="p">:</span>
                     <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">interv</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">multiply_t</span><span class="p">)</span>
                     <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">v</span> <span class="o">=</span> <span class="n">interv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>              
                     <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                 
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">i_min</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">p_min</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="n">p_min</span> <span class="o">=</span> <span class="n">v</span>
-                    <span class="k">if</span> <span class="n">p_min</span> <span class="o">&gt;</span> <span class="n">v</span><span class="p">:</span> <span class="n">p_min</span> <span class="o">=</span> <span class="n">v</span>
+                    <span class="k">if</span> <span class="n">p_min</span> <span class="o">&gt;</span> <span class="n">v</span><span class="p">:</span> <span class="n">p_min</span> <span class="o">=</span> <span class="n">v</span>                    
                 
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">i_max</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">i_max</span> <span class="o">==</span> <span class="n">i_new_field</span><span class="p">:</span>
@@ -397,6 +441,7 @@
                         <span class="k">if</span> <span class="n">p_max</span> <span class="o">&lt;</span> <span class="n">v</span><span class="p">:</span> <span class="n">p_max</span> <span class="o">=</span> <span class="n">v</span>
                 
                 <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">i_data_value</span><span class="p">:</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>                    
                     <span class="k">if</span> <span class="n">p_min_data_v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="n">p_min_data_v</span> <span class="o">=</span> <span class="n">v</span>
                     <span class="k">if</span> <span class="n">p_min_data_v</span> <span class="o">&gt;</span> <span class="n">v</span><span class="p">:</span> <span class="n">p_min_data_v</span> <span class="o">=</span> <span class="n">v</span>
                     <span class="k">if</span> <span class="n">p_max_data_v</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="n">p_max_data_v</span> <span class="o">=</span> <span class="n">v</span>
@@ -419,6 +464,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="n">p_min</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="n">p_max</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">range_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">p_min_data_v</span><span class="p">,</span> <span class="n">p_max_data_v</span><span class="p">]</span>
+        
+        <span class="c">#Setting the data fields that output data have in the order they are</span>
+        <span class="n">data_fields</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="n">sorted_index_f</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fieldsG_dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">field_gen</span> <span class="ow">in</span> <span class="n">sorted_index_f</span><span class="p">:</span>
+            <span class="n">data_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_gen</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fieldsG</span> <span class="o">=</span> <span class="n">data_fields</span>
+        <span class="k">print</span> <span class="s">&quot;..........&quot;</span><span class="p">,</span> <span class="n">sorted_index_f</span>
         
 <span class="c">#         DataIter(self._read(indexL, idx_fields2rel, idx_fields2int, l_startChrom, l_endChrom, multiply_t), self.fieldsG)</span>
 <span class="c">#         return (list_data, p_min, p_max)</span>
@@ -518,7 +572,6 @@
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Field &#39;</span><span class="si">%s</span><span class="s">&#39; not in file </span><span class="si">%s</span><span class="s"> mandatory when option relative_coord=T.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
             
-<span class="c">#             print idx_fields2rel#del</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time2rel_time</span><span class="p">(</span><span class="n">idx_fields2rel</span><span class="p">)</span>
                 
         <span class="n">idx_fields2int</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000000000000</span><span class="p">]</span>

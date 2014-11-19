@@ -227,9 +227,7 @@
 <span class="sd">        :returns: dictionary containing object/s of the class set by mode </span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;relative_coord&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;relative_coord&quot;</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>
-        
-<span class="c">#         print &gt;&gt; stderr, self.fields #del       </span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;relative_coord&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;relative_coord&quot;</span><span class="p">,</span><span class="bp">False</span><span class="p">)</span>     
         
         <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_dict_file</span><span class="p">:</span> 
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Mode </span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s"> not available. Possible convert() modes are </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span><span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">_dict_file</span><span class="o">.</span><span class="n">keys</span><span class="p">()])))</span>
@@ -265,7 +263,7 @@
         
         <span class="c">#Generate dictionary of original fields and color gradients</span>
         <span class="n">_dict_col_grad</span> <span class="o">=</span> <span class="n">assign_color</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataTypes</span><span class="p">)</span>
-        <span class="k">print</span> <span class="n">_dict_col_grad</span>
+        
         <span class="c">### Tracks not set in tracks option are filtered out</span>
         <span class="n">sel_tracks</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;tracks&#39;</span><span class="p">):</span>
@@ -457,12 +455,11 @@
         <span class="n">i_data_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;dataTypes&quot;</span><span class="p">)</span>
         
         <span class="c">#Generate dictionary of field and color gradients</span>
-        <span class="n">_dict_col_grad</span> <span class="o">=</span> <span class="n">assign_color</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataTypes</span><span class="p">)</span>
-        
-        <span class="n">step</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">/</span> <span class="mi">10</span>
+        <span class="n">_dict_col_grad</span> <span class="o">=</span> <span class="n">assign_color</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataTypes</span><span class="p">)</span>        
+        <span class="n">step</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">/</span> <span class="mi">9</span>
 
-        <span class="n">_intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_values</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">step</span><span class="p">))</span>   
-
+        <span class="n">_intervals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_values</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">step</span><span class="p">))</span>
+                
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">track</span><span class="p">:</span>
             <span class="n">temp_list</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">temp_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;chr1&quot;</span><span class="p">)</span>
@@ -676,7 +673,6 @@
 <span class="sd">        as values</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">print</span> <span class="s">&quot;is a set or a list&quot;</span><span class="p">,</span><span class="n">set_dataTypes</span>
     <span class="n">d_dataType_color</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">colors_not_used</span> <span class="o">=</span> <span class="p">[]</span>
     
