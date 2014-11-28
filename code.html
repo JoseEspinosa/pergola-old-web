@@ -594,6 +594,53 @@ fields and features of <strong>bedGraph files</strong></p>
 </table>
 </dd></dl>
 
+<span class="target" id="module-pergola.parsers"></span><div class="section" id="module-parsers">
+<span id="module-pergola-parsers"></span><h2>Module: pergola.parsers<a class="headerlink" href="#module-parsers" title="Permalink to this headline">¶</a></h2>
+<p>This module provides the way to read scripts options provided by pergola library.</p>
+<dl class="function">
+<dt id="pergola.parsers.parse_num_range">
+<code class="descclassname">pergola.parsers.</code><code class="descname">parse_num_range</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pergola/parsers.html#parse_num_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pergola.parsers.parse_num_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function generate a numeric range from a string containing the boundaries
+From 1-4 generates a string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tracks</strong> &#8211; <code class="xref py py-func docutils literal"><span class="pre">set()</span></code> of tracks to which track_action should be applied set([1,2])</li>
+<li><strong>delimiter</strong> &#8211; <code class="xref py py-func docutils literal"><span class="pre">str()</span></code> option to join tracks (join_all, split_all, join_odd, join_evens)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-func docutils literal"><span class="pre">set()</span></code> with all the numbers in range as strings</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pergola.parsers.read_track_actions">
+<code class="descclassname">pergola.parsers.</code><code class="descname">read_track_actions</code><span class="sig-paren">(</span><em>tracks</em>, <em>track_action='split_all'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pergola/parsers.html#read_track_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pergola.parsers.read_track_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read track actions and returns a set with the tracks to be joined</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tracks</strong> &#8211; <code class="xref py py-func docutils literal"><span class="pre">set()</span></code> of tracks to which track_action should be applied set([1,2])</li>
+<li><strong>track_action</strong> &#8211; <code class="xref py py-func docutils literal"><span class="pre">str()</span></code> option to join tracks (join_all, split_all, join_odd, join_evens)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="xref py py-func docutils literal"><span class="pre">set()</span></code> of tracks to be joined</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -611,6 +658,7 @@ fields and features of <strong>bedGraph files</strong></p>
 <li><a class="reference internal" href="#module-intervals">Module: pergola.intervals</a></li>
 <li><a class="reference internal" href="#module-mapping">Module: pergola.mapping</a></li>
 <li><a class="reference internal" href="#module-tracks">Module: pergola.tracks</a></li>
+<li><a class="reference internal" href="#module-parsers">Module: pergola.parsers</a></li>
 </ul>
 </li>
 </ul>
